@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Deposit</title>
+    <th:block th:replace="/layout/head"></th:block>
+</head>
+
+<body>
+<div class="container">
+    <div class="table-title">
+        <div class="row">
+            <div class="col-sm-5">
+                <h1>Deposit</h1>
+            </div>
+            <div class="col-sm-7">
+                <a href="/customers" class="btn btn-outline-light">
+                    <i class="fa-solid fa-bars"></i>
+                    <span>List of customers</span>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div>
+        <form method="post" autocomplete="off" th:object="${deposit}">
+            <div class="row mt-3">
+
+                <div class="mb-3 float-left col-lg-3 col-sm-12 col-md-6">
+                    <label for="senderID" class="form-label">Customer ID</label>
+                    <input type="number" class="form-control" id="senderID"
+                           th:value="${deposit.getCustomer().id}" readonly
+                    >
+                </div>
+                <div class="mb-3 float-left col-lg-3 col-sm-12 col-md-6">
+                    <label for="senderName" class="form-label">Customer Name</label>
+                    <input type="text" class="form-control" id="senderName"
+                           th:value="${deposit.getCustomer().fullName}" readonly
+                    >
+                </div>
+                <div class="mb-3 float-left col-lg-3 col-sm-12 col-md-6">
+                    <label for="email" class="form-label">Customer Email</label>
+                    <input type="email" class="form-control" id="email"
+                           th:value="${deposit.getCustomer().email}" readonly
+                    >
+                </div>
+                <div class="mb-3 float-left col-lg-3 col-sm-12 col-md-6">
+                    <label for="balance" class="form-label">Customer Balance</label>
+                    <input type="number" class="form-control" id="balance"
+                           th:value="${deposit.getCustomer().balance}" readonly
+                    >
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="mb-3 float-left col-lg-3 col-sm-12 col-md-6">
+                    <label for="deposit" class="form-label">Deposit Amount (VND)</label>
+                    <input type="number" class="form-control" id="deposit" name="deposit" th:value="0">
+                </div>
+            </div>
+            <button type="submit" class="btn btn-outline-warning">
+                <i class="fas fa-exchange-alt"></i>
+                Deposit
+            </button>
+        </form>
+    </div>
+</div>
+
+
+</body>
+
+</html>

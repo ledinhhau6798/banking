@@ -1,0 +1,96 @@
+﻿<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>List of customers</title>
+    <th:block th:replace="/layout/head :: head"></th:block>
+</head>
+
+<body>
+<div class="container">
+    <div class="table-title">
+        <div class="row">
+            <div class="col-sm-4">
+                <h1>List of customers</h1>
+            </div>
+            <div class="col-sm-8">
+                <a href="/customers/create" class="btn btn-outline-light">
+                    <i class="fa-solid fa-plus"></i>
+                    <span>Add New Customer</span>
+                </a>
+                <a href="/customers/transferInfo" class="btn btn-outline-light">
+                    <i class="fa fa-history" aria-hidden="true"></i>
+                    <span>Transfer Information</span>
+                </a>
+                <a href="/customers/withdrawInfo" class="btn btn-outline-light">
+                    <i class="fa fa-history" aria-hidden="true"></i>
+                    <span>WithDraw Information</span>
+                </a>
+                <a href="/customers/depositInfo" class="btn btn-outline-light">
+                    <i class="fa fa-history" aria-hidden="true"></i>
+                    <span>Deposit Information</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <table class="table table-hover table-borderless">
+            <div th:if="${success}">
+                <h2 style="color: gold;" th:text="${message}"></h2>
+            </div>
+
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Full Name</th>
+                <th>Email</th>
+                <th>Phone Number</th>
+                <th>Address</th>
+                <th>Balance</th>
+                <th colspan="5" class="text-center">Action</th>
+            </tr>
+            </thead>
+            <tbody id="tbCustomer">
+
+            <th:block th:each="customer : ${customers}">
+                <tr>
+                    <td th:text="${customer.id}"></td>
+                    <td th:text="${customer.fullName}"></td>
+                    <td th:text="${customer.email}"></td>
+                    <td th:text="${customer.phone}"></td>
+                    <td th:text="${customer.address}"></td>
+                    <td th:text="${customer.balance}"></td>
+                    <td class="text-center">
+                        <a title="Edit" th:href="@{/customers/edit/{id}(id=${customer.id})}"
+                           class="btn btn-outline-primary">
+                            <i class="fas fa-user-edit"></i>
+                        </a>
+                        <a title="Deposit" th:href="@{/customers/deposit/{id}(id=${customer.id})}"
+                           class="btn btn-outline-secondary">
+                            <i class="fas fa-plus-circle"></i>
+                        </a>
+                        <a title="Withdraw" th:href="@{/customers/withdraw/{id}(id=${customer.id})}"
+                           class="btn btn-outline-success">
+                            <i class="fas fa-minus-circle"></i>
+                        </a>
+                        <a title="Transfer" th:href="@{/customers/transfer/{id}(id=${customer.id})}"
+                           class="btn btn-outline-warning">
+                            <i class="fas fa-exchange-alt"></i>
+                        </a>
+                        <a title="delete" th:href="@{/customers/delete/{id}(id=${customer.id})}"
+                           class="btn btn-outline-danger">
+                            <i class="fas fa-ban"></i>
+                        </a>
+                    </td>
+                </tr>
+            </th:block>
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+
+
+</body>
+</html>
