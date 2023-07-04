@@ -32,3 +32,18 @@
     padding-bottom: 0!important;
     margin-bottom: 0!important;
 }
+span.error {
+    color: red;
+}
+
+footer {
+    position: fixed !important;
+    bottom: 0;
+    left: 0;
+    height: auto;
+    margin-bottom: 0 !important;
+    width: 100%;
+}
+.align-td{
+    text-align: center;
+}

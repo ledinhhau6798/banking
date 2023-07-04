@@ -1,15 +1,19 @@
 package com.cg.service.withdraw;
 
 import com.cg.model.Withdraw;
+import com.cg.repository.WithdrawRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 @Service
 public class WithdrawServiceImpl implements IWithdrawService{
+    @Autowired
+    private WithdrawRepository withdrawRepository;
     @Override
     public List<Withdraw> findAll() {
-        return null;
+        return withdrawRepository.findAll();
     }
 
     @Override
@@ -19,7 +23,7 @@ public class WithdrawServiceImpl implements IWithdrawService{
 
     @Override
     public Withdraw save(Withdraw withdraw) {
-        return null;
+        return withdrawRepository.save(withdraw);
     }
 
     @Override

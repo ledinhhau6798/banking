@@ -49,7 +49,29 @@
         </form>
     </div>
 </div>
-
+<footer class="container-fluid">
+    <div>
+    <th:block th:if="${success == true}">
+        <div class="success">
+            <ul class="container">
+                <li th:text="${messages}"></li>
+            </ul>
+        </div>
+    </th:block>
+    </div>
+    <div class="error-area">
+                <th:block th:if="${hasError} == true">
+                    <ul>
+                        <li th:each="err : ${#fields.errors('customer.*')}" th:text="${err}"></li>
+                    </ul>
+                </th:block>
+                <th:block th:if="${notValid} == true">
+                    <ul>
+                        <li th:text="${message}"></li>
+                    </ul>
+                </th:block>
+            </div>
+</footer>
 
 </body>
 </html>

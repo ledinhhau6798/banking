@@ -7,18 +7,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.dialect.IDialect;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class DepositServiceImpl implements IDepositService {
 
-@Autowired
-private DepositRepository depositRepository;
+    @Autowired
+    private DepositRepository depositRepository;
+
 
     @Override
     public List<Deposit> findAll() {
-        return null;
+        return depositRepository.findAll();
     }
 
     @Override

@@ -27,32 +27,32 @@
                 <div class="mb-3 float-left col-lg-3 col-sm-12 col-md-6">
                     <label for="senderID" class="form-label">Customer ID</label>
                     <input type="number" class="form-control" id="senderID"
-                           th:value="${deposit.getCustomer().id}" readonly
+                           th:field="*{customer.id}" readonly
                     >
                 </div>
                 <div class="mb-3 float-left col-lg-3 col-sm-12 col-md-6">
                     <label for="senderName" class="form-label">Customer Name</label>
                     <input type="text" class="form-control" id="senderName"
-                           th:value="${deposit.getCustomer().fullName}" readonly
+                           th:field="*{customer.fullName}" readonly
                     >
                 </div>
                 <div class="mb-3 float-left col-lg-3 col-sm-12 col-md-6">
                     <label for="email" class="form-label">Customer Email</label>
                     <input type="email" class="form-control" id="email"
-                           th:value="${deposit.getCustomer().email}" readonly
+                           th:field="*{customer.email}" readonly
                     >
                 </div>
                 <div class="mb-3 float-left col-lg-3 col-sm-12 col-md-6">
                     <label for="balance" class="form-label">Customer Balance</label>
                     <input type="number" class="form-control" id="balance"
-                           th:value="${deposit.getCustomer().balance}" readonly
+                           th:field="*{customer.balance}" readonly
                     >
                 </div>
             </div>
             <div class="row mt-3">
                 <div class="mb-3 float-left col-lg-3 col-sm-12 col-md-6">
-                    <label for="deposit" class="form-label">Deposit Amount (VND)</label>
-                    <input type="number" class="form-control" id="deposit" name="deposit" th:value="0">
+                    <label for="deposit" class="form-label">Transaction Amount)</label>
+                    <input type="number" class="form-control" id="deposit" name="transactionAmount" placeholder="money">
                 </div>
             </div>
             <button type="submit" class="btn btn-outline-warning">
@@ -62,6 +62,14 @@
         </form>
     </div>
 </div>
+
+<footer>
+    <div class="container">
+        <ul>
+            <li th:each="err : ${#fields.errors('deposit.*')}" th:text="${err}"></li>
+        </ul>
+    </div>
+</footer>
 
 
 </body>

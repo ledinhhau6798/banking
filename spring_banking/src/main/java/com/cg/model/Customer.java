@@ -2,6 +2,8 @@ package com.cg.model;
 
 
 import lombok.*;
+import org.springframework.validation.Errors;
+import org.springframework.validation.Validator;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -14,7 +16,7 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "customers")
-public class Customer extends BaseEntity {
+public class Customer extends BaseEntity implements Validator {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,7 +30,7 @@ public class Customer extends BaseEntity {
 
     private String phone;
 
-    @Column(precision = 12, columnDefinition = "decimal default 0")
+    @Column(precision = 10, columnDefinition = "decimal default 0",updatable = false)
     private BigDecimal balance;
 
     @Column
@@ -47,6 +49,30 @@ public class Customer extends BaseEntity {
     private List<Transfer> recipients;
 
 
+    @Override
+    public boolean supports(Class<?> aClass) {
+        return Customer.class.isAssignableFrom(aClass);
+    }
 
+    @Override
+    public void validate(Object target, Errors errors) {
+        Customer customer = (Customer) target;
 
+        String fullName = customer.fullName;
+
+        if (fullName.length() == 0) {
+            errors.rejectValue("fullName", "fullName.empty" );
+        }
+        else {
+            if (fullName.length() < 5 || fullName.length() > 20) {
+                errors.rejectValue("fullName", "fullName.length");
+            }
+        }
+
+        String email = customer.email;
+            if (email.length() == 0) {
+                errors.rejectValue("email","email.empty");
+            }
+
+    }
 }

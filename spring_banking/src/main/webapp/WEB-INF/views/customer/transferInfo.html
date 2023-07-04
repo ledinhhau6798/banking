@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Transfer info</title>
+    <th:block th:replace="/layout/head :: head"></th:block>
+</head>
+<body>
+<div class="container">
+    <div class="table-title">
+        <div class="row">
+            <div class="col-sm-5">
+                <h1>Transfer Information</h1>
+            </div>
+            <div class="col-sm-7">
+                <a href="/customers" class="btn btn-outline-light">
+                    <i class="fa-solid fa-bars"></i>
+                    <span>List of customers</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+    <div>
+          <table class="table table-hover">
+    <thead>
+    <tr>
+      <th>Id</th>
+      <th>Sender ID</th>
+      <th>Sender Name</th>
+      <th>Recipient ID</th>
+      <th>Recipient Name</th>
+      <th>Transfer Amount</th>
+      <th>Fees</th>
+      <th>Fees Amount</th>
+      <th>Transaction Amount</th>
+    </tr>
+    </thead>
+    <tbody class="align-td">
+    <th:block th:each="item : ${transfers}">
+      <tr>
+        <td th:text="${item.id}"></td>
+        <td th:text="${item.sender.id}"></td>
+        <td th:text="${item.sender.fullName}"></td>
+        <td th:text="${item.recipient.id}"></td>
+        <td th:text="${item.recipient.fullName}"></td>
+        <td th:text="${item.transferAmount}"></td>
+        <td th:text="${item.fees}"></td>
+        <td th:text="${item.feesAmount}"></td>
+        <td th:text="${item.transactionAmount}"></td>
+      </tr>
+    </th:block>
+    </tbody>
+    <tfoot>
+    <tr>
+      <td colspan="5"></td>
+      <td colspan="2">Tổng tiền phí:</td>
+      <td colspan="2" th:text="${totalFeesAmount}"></td>
+    </tr>
+    </tfoot>
+  </table>
+    </div>
+</div>
+
+
+</body>
+</html>
