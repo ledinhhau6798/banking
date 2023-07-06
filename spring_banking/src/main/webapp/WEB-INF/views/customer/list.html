@@ -84,8 +84,21 @@
         </table>
 
     </div>
-</div>
 
+    <footer>
+        <th:block th:if="${success == true}">
+            <div class="success">
+                <ul class="container">
+                    <li th:text="${message}"></li>
+                </ul>
+            </div>
+        </th:block>
+
+
+
+    </footer>
+
+</div>
 
 
 </body>

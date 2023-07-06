@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>List of customers</title>
+    <link rel="stylesheet" href="/assets/bootstrap/v-5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets//fontawesome/v-5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="/assets/sweetalert2/sweetalert2.min.css">
+    <link rel="stylesheet" href="./assets/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <nav class="navbar navbar-expand-lg bg-body-navbar">
+                <div class="container-fluid">
+                    <h1 class="navbar-brand">List of customers</h1>
+                    <div class="collapse navbar-collapse" id="navbarScroll">
+                        <div class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll"
+                            style="--bs-scroll-height: 100px;">
+                        </div>
+                        <form class="d-flex" role="search">
+                            <button class="btn btn-outline-light me-3" type="button">Transfer history</button>
+                            <button class="btn btn-outline-light" type="button" data-bs-toggle="modal"
+                                data-bs-target="#modalCreate">Create</button>
+                        </form>
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+        <table class="table table-hover" id="tbCustomer" >
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Full Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Phone</th>
+                <th scope="col">Balance</th>
+                <th scope="col">Address</th>
+                <th class="text-center"scope="col-5">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+            </tbody>
+          </table>
+
+     <!-- Modal create -->
+    <div class="modal fade" id="modalCreate" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5">Modal create customer</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form class="forms-sample" method="post">
+                    <div class="row">
+                        <div class="form-group col-6">
+                            <label for="fullNameCre">Full Name</label>
+                            <input type="text" class="form-control" id="fullNameCre"
+                                placeholder="Enter Name">
+                        </div>
+                        <div class="form-group col-6">
+                            <label for="emailCre">Email</label>
+                            <input type="email" class="form-control" id="emailCre" 
+                                placeholder="Enter Email">
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="form-group col-6">
+                            <label for="phoneCre">Phone</label>
+                            <input type="tel" class="form-control" id="phoneCre"
+                                placeholder="Enter Phone">
+                        </div>
+                        <div class="form-group col-6">
+                            <label for="addressCre">Address</label>
+                            <input type="text" class="form-control" id="addressCre" 
+                                placeholder="Enter Address">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" id="btnCreate" class="btn btn-outline-primary">Create</button>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <!-- Modal update -->
+    <div class="modal fade" id="modalUpdate" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5">Modal update customer</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="error-area" style="color: red;"></div>
+                <form method="post">
+                    <div class="row mb-3">
+                        <div class="col-lg-6">
+                            <label class="fw-bold">Full Name</label>
+                            <input type="text" class="form-control" id="fullNameUp">
+                        </div>
+                        <div class="col-lg-6">
+                            <label class="fw-bold">Email</label>
+                            <input type="email" class="form-control" id="emailUp">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-lg-6">
+                            <label class="fw-bold">Phone</label>
+                            <input type="tel" class="form-control" id="phoneUp">
+                        </div>
+                        <div class="col-lg-6">
+                            <label class="fw-bold">Address</label>
+                            <input type="text" class="form-control" id="addressUp">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" id="btnUpdate" class="btn btn-primary">Update</button>
+            </div>
+        </div>
+    </div>
+    </div>
+    <!-- Modal deposit -->
+    <div class="modal fade " id="modalDeposit" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5">Modal Deposit customer</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="error-area" style="color: red;"></div>
+                <form method="post">
+                    <div class="row mb-3">
+                        <div class="col-lg-6">
+                            <label class="fw-bold">Full Name</label>
+                            <input type="text" class="form-control" id="fullNameDe">
+                        </div>
+                        <div class="col-lg-6">
+                            <label class="fw-bold">Email</label>
+                            <input type="email" class="form-control" id="emailDe">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-lg-6">
+                            <label class="fw-bold">Phone</label>
+                            <input type="tel" class="form-control" id="phoneDe">
+                        </div>
+                        <div class="col-lg-6">
+                            <label class="fw-bold">Address</label>
+                            <input type="text" class="form-control" id="addressDe">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-lg-6">
+                            <label class="fw-bold">recharge</label>
+                            <input type="number" class="form-control" id="rechargeDe"> 
+                        </div>
+                        <div class="col-lg-6">
+                            <label class="fw-bold">Balance</label>
+                            <input type="text" class="form-control" id="balanceDe">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" id="btnDeposit" class="btn btn-primary">Deposit</button>
+            </div>
+        </div>
+    </div>
+    </div>
+
+     <!-- Modal withdraw -->
+     <div class="modal fade " id="modalWithdraw" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+     aria-hidden="true">
+     <div class="modal-dialog modal-lg modal-dialog-centered">
+         <div class="modal-content">
+             <div class="modal-header">
+                 <h1 class="modal-title fs-5">Modal withdraw customer</h1>
+                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+             </div>
+             <div class="modal-body">
+                 <div class="error-area" style="color: red;"></div>
+                 <form method="post">
+                     <div class="row mb-3">
+                         <div class="col-lg-6">
+                             <label class="fw-bold">Full Name</label>
+                             <input type="text" class="form-control" id="fullNameWi">
+                         </div>
+                         <div class="col-lg-6">
+                             <label class="fw-bold">Email</label>
+                             <input type="email" class="form-control" id="emailWi">
+                         </div>
+                     </div>
+                     <div class="row mb-3">
+                         <div class="col-lg-6">
+                             <label class="fw-bold">Phone</label>
+                             <input type="tel" class="form-control" id="phoneWi">
+                         </div>
+                         <div class="col-lg-6">
+                             <label class="fw-bold">Address</label>
+                             <input type="text" class="form-control" id="addressWi">
+                         </div>
+                     </div>
+                     <div class="row mb-3">
+                         <div class="col-lg-6">
+                             <label class="fw-bold">recharge</label>
+                             <input type="number" class="form-control" id="rechargeWi"> 
+                         </div>
+                         <div class="col-lg-6">
+                             <label class="fw-bold">Balance</label>
+                             <input type="text" class="form-control" id="balanceWi">
+                         </div>
+                     </div>
+                 </form>
+             </div>
+             <div class="modal-footer">
+                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                 <button type="button" id="btnWithdraw" class="btn btn-primary">Withdraw</button>
+             </div>
+         </div>
+     </div>
+     </div>
+
+      <!-- Modal Transfer -->
+      <div class="modal fade " id="modalTransfer" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+      aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h1 class="modal-title fs-5">Modal Transfer customer</h1>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                  <div class="error-area" style="color: red;"></div>
+                  <form method="post">
+                    <div class="row mt-3">
+                        <div class="mb-3 float-left col-lg-3 col-sm-12 col-md-6">
+                            <label class="form-label">Sender ID</label>
+                            <input type="number" class="form-control" id="senderIDT"
+                                    readonly
+                            >
+                        </div>
+                        <div class="mb-3 float-left col-lg-3 col-sm-12 col-md-6">
+                            <label  class="form-label">Sender Name</label>
+                            <input type="text" class="form-control" id="senderNameT"
+                                   readonly
+                            >
+                        </div>
+                        <div class="mb-3 float-left col-lg-3 col-sm-12 col-md-6">
+                            <label class="form-label">Sender Email</label>
+                            <input type="email" class="form-control" id="emailT"
+                                    readonly
+                            >
+                        </div>
+                        <div class="mb-3 float-left col-lg-3 col-sm-12 col-md-6">
+                            <label  class="form-label">Sender Balance</label>
+                            <input type="number" class="form-control" id="balanceT"
+                                   readonly
+                            >
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="mb-3 float-left col-lg-3 col-sm-12 col-md-6">
+                            <label class="form-label">Recipient Name</label>
+                            <select id="recipientT" class="form-control">
+
+                               
+
+
+                                <!-- <th:block th:each="customer : ${customers}">
+                                    <option th:value="${customer.id}" th:text="${customer.name}"></option>
+                                </th:block> -->
+                            </select>
+                            
+                            
+                        </div>
+                        <div class="mb-3 float-left col-lg-3 col-sm-12 col-md-6">
+                            <label  class="form-label">Transfer Amount (VND)</label>
+                            <input type="number" class="form-control" id="transfer"  >
+                        </div>
+                        <div class="mb-3 float-left col-lg-3 col-sm-12 col-md-6">
+                            <label  class="form-label">Fee (%)</label>
+                            <input type="number" class="form-control" id="fees"  readonly>
+                        </div>
+                        <div class="mb-3 float-left col-lg-3 col-sm-12 col-md-6">
+                            <label class="form-label">Total Amount (VND)</label>
+                            <input type="number" class="form-control" id="total" readonly>
+                        </div>
+                    </div>
+                  </form>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <button type="button" id="btnTransfer" class="btn btn-outline-warning">Transfer</button>
+              </div>
+          </div>
+      </div>
+      </div>
+
+
+    <!-- <script src="./assets/jquery/jquery-3.7.0.min.js"></script> -->
+    <script src="./assets/bootstrap/v-5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="./assets/sweetalert2/sweetalert2.all.min.js"></script>
+<script>
+        let id = 1;
+        let customerId = 0;
+        let customers = [
+            {
+                id: id++,
+                fullName: 'AVA',
+                email: 'AVA@gmail.com',
+                phone: '2345',
+                address: '28 Nguyễn Tri Phương',
+                balance: 0,
+                deleted: 0
+                
+            },
+            {
+                id: id++,
+                fullName: 'AVB',
+                email: 'AVB@gmail.com',
+                phone: '6789',
+                address: 'hue',
+                balance: 0,
+                deleted: 0
+            },
+        ]
+
+        const renderCustomer = (obj) => {
+            return `
+                <tr id="tr_${obj.id}">
+                    <th scope="row">${obj.id}</th>
+                    <td>${obj.fullName}</td>
+                    <td>${obj.email}</td>
+                    <td>${obj.phone}</td>
+                    <td>${obj.balance}</td>
+                    <td>${obj.address}</td>
+                    <td class="text-center">
+                        <button class="btn btn-outline-secondary edit" 
+                            data-id="${obj.id}"
+                        >
+                            <i class="fa fa-pencil-alt"></i>
+                        </button>
+                        <button class="btn btn-outline-success deposit"
+                            data-id="${obj.id}"
+                        >
+                            <i class="fas fa-plus"></i>
+                        </button>
+                        <button class="btn btn-outline-warning withdraw"
+                            data-id="${obj.id}"
+                        >
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <button class="btn btn-outline-primary transfer"
+                            data-id="${obj.id}"
+                        >
+                            <i class="fas fa-exchange-alt"></i>
+                        </button>
+                        <button class="btn btn-outline-danger delete"
+                            data-id="${obj.id}"
+                        >
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </td>
+                </tr>
+            `
+        }
+        // hiển thị danh sách
+        function getAllCustomers(){
+            const tbCustomerBody = document.querySelector('#tbCustomer tbody')
+
+            tbCustomerBody.innerHTML = '';
+            customers.forEach(item => {
+                const str = renderCustomer(item);
+                tbCustomerBody.innerHTML += str;
+            });
+            
+        }
+        // sự kiện
+        getAllCustomers();
+
+        // thêm
+          const btnCreate = document.getElementById('btnCreate')
+        btnCreate.addEventListener('click', () => {
+            const fullName = document.getElementById('fullNameCre').value
+            const email = document.getElementById('emailCre').value
+            const phone = document.getElementById('phoneCre').value
+            const address = document.getElementById('addressCre').value
+            const balance = 0
+
+            const obj = {
+                id: id++,
+                fullName: fullName,
+                email: email,
+                phone: phone,
+                balance: balance,
+                address: address
+            }
+
+            customers.push(obj);
+
+            getAllCustomers();
+            getAllCustomers();
+            handleAddEvenShowModalWithdraw();
+            handleAddEvenShowModalDeposit();
+            handleAddEventShowModalUpdate();
+            addEvenDeleted();
+            handleAddEvenShowModalTransfer();
+
+        })
+        // lấy tất cả id
+        function getCustomerById(id){
+            return customers.find(item => item.id == id);
+        }
+        // kiểm tra id
+        function findCustomerIndexById(id){
+            let index = -1;
+
+            for(let i = 0 ; i <customers.length; i++){
+                if(customers[i].id === id){
+                    index = i;
+                }
+            }
+            return index;
+        }
+        // hiển thị edit
+        function handleAddEventShowModalUpdate() {
+            let btnEdit = document.querySelectorAll('.edit');
+
+            btnEdit.forEach(item => {
+                item.addEventListener('click', function () {
+                    customerId = +item.getAttribute('data-id');
+                    const obj = getCustomerById(customerId);
+
+                    document.getElementById('fullNameUp').value = obj.fullName;
+                    document.getElementById('emailUp').value = obj.email;
+                    document.getElementById('phoneUp').value = obj.phone;
+                    document.getElementById('addressUp').value = obj.address;
+
+                    const modalUpdate = new bootstrap.Modal(document.getElementById('modalUpdate'), {
+                        keyboard: false
+                    })
+
+                    modalUpdate.show()
+                })
+            })
+        }
+        // sự kiện mở edit
+        handleAddEventShowModalUpdate();
+   
+
+        // sửa edit
+        const btnUpdate = document.getElementById('btnUpdate');
+        btnUpdate.addEventListener('click', function () {
+            const fullName = document.getElementById('fullNameUp').value;
+            const email = document.getElementById('emailUp').value;
+            const phone = document.getElementById('phoneUp').value;
+            const address = document.getElementById('addressUp').value;
+
+            const obj = {
+                id: customerId,
+                fullName,
+                email,
+                phone,
+                address
+            }
+
+            const index = findCustomerIndexById(customerId);
+
+            customers[index] = obj;
+
+            getAllCustomers();
+            handleAddEvenShowModalWithdraw();
+            handleAddEvenShowModalDeposit();
+            handleAddEventShowModalUpdate();
+            addEvenDeleted();
+            handleAddEvenShowModalTransfer();
+        })
+
+        
+
+        // hiển thị Deposit
+        function handleAddEvenShowModalDeposit() {
+            let btDeposit = document.querySelectorAll('.deposit');
+
+            btDeposit.forEach(item => {
+                item.addEventListener('click', function() {
+                    customerId = +item.getAttribute('data-id');
+                    const obj = getCustomerById(customerId);
+
+                    document.getElementById('fullNameDe').value = obj.fullName;
+                    document.getElementById('emailDe').value = obj.email;
+                    document.getElementById('phoneDe').value = obj.phone;
+                    document.getElementById('addressDe').value = obj.address;
+                    document.getElementById('rechargeDe').value = 0 ;
+                    document.getElementById('balanceDe').value = obj.balance;
+
+                    const modalDeposit = new bootstrap.Modal(document.getElementById('modalDeposit'), {
+                        keyboard: false
+                    })
+
+                    modalDeposit.show();
+                })
+            })
+        }
+        // sự kiện mở deposit
+        handleAddEvenShowModalDeposit(); 
+
+        // hiện thị transfer
+        function handleAddEvenShowModalTransfer() {
+            let btTransfer = document.querySelectorAll('.transfer');
+
+            btTransfer.forEach(item => {
+                item.addEventListener('click', function() {
+                    customerId = +item.getAttribute('data-id');
+                    const obj = getCustomerById(customerId);
+                    console.log(obj);
+                    document.getElementById('senderIDT').value = obj.id;
+                    document.getElementById('senderNameT').value = obj.fullName;
+                    document.getElementById('emailT').value = obj.email;
+                    document.getElementById('balanceT').value = obj.balance;
+                    document.getElementById('recipientT').value = obj.fullName;
+                    document.getElementById('transfer').value= 0;
+                    document.getElementById('fees').value= 10;
+                    document.getElementById('total').value= 0;
+
+                    const modalTransfer = new bootstrap.Modal(document.getElementById('modalTransfer'), {
+                        keyboard: false
+                    })
+
+                    modalTransfer.show();
+                })
+            })
+        }
+        // sự kiên mở Transfer
+        handleAddEvenShowModalTransfer();
+
+        // thêm Deposit
+        const btnDeposit = document.getElementById('btnDeposit');
+        btnDeposit.addEventListener('click',function () {
+            const fullName = document.getElementById('fullNameDe').value;
+            const email = document.getElementById('emailDe').value;
+            const phone = document.getElementById('phoneDe').value;
+            const address = document.getElementById('addressDe').value;
+            const balance = +document.getElementById('balanceDe').value +(+document.getElementById('rechargeDe').value);
+
+            const obj = {
+                id: customerId,
+                fullName,
+                email,
+                phone,
+                address,
+                balance
+            }
+
+            const index = findCustomerIndexById(customerId);
+
+            customers[index] = obj;
+
+            getAllCustomers();
+            handleAddEvenShowModalWithdraw();
+            handleAddEvenShowModalDeposit();
+            handleAddEventShowModalUpdate();
+            addEvenDeleted();
+            handleAddEvenShowModalTransfer();
+
+        })
+
+
+
+        // hiển thị Withdraw
+        function handleAddEvenShowModalWithdraw() {
+            let btwithdraw = document.querySelectorAll('.withdraw');
+
+            btwithdraw.forEach(item => {
+                item.addEventListener('click', function() {
+                    customerId = +item.getAttribute('data-id');
+                    const obj = getCustomerById(customerId);
+
+                    document.getElementById('fullNameWi').value = obj.fullName;
+                    document.getElementById('emailWi').value = obj.email;
+                    document.getElementById('phoneWi').value = obj.phone;
+                    document.getElementById('addressWi').value = obj.address;
+                    document.getElementById('rechargeWi').value = 0 ;
+                    document.getElementById('balanceWi').value = obj.balance;
+
+                    const modalWithdraw = new bootstrap.Modal(document.getElementById('modalWithdraw'), {
+                        keyboard: false
+                    })
+
+                    modalWithdraw.show();
+                })
+            })
+        }
+        // sự kiện mở Withdraw
+        handleAddEvenShowModalWithdraw(); 
+        
+        // thêm Withdraw
+        const btnWithdraw = document.getElementById('btnWithdraw');
+        btnWithdraw.addEventListener('click',function () {
+            const fullName = document.getElementById('fullNameWi').value;
+            const email = document.getElementById('emailWi').value;
+            const phone = document.getElementById('phoneWi').value;
+            const address = document.getElementById('addressWi').value;
+            const balance = +document.getElementById('balanceWi').value - (+document.getElementById('rechargeWi').value);
+
+            const obj = {
+                id: customerId,
+                fullName,
+                email,
+                phone,
+                address,
+                balance
+            }
+
+            const index = findCustomerIndexById(customerId);
+
+            customers[index] = obj;
+
+            getAllCustomers();
+            handleAddEvenShowModalWithdraw();
+            handleAddEvenShowModalDeposit();
+            handleAddEventShowModalUpdate();
+            addEvenDeleted();
+            handleAddEvenShowModalTransfer();
+            
+        })
+
+        //xóa
+        function addEvenDeleted() {
+            let btDelete = document.querySelectorAll('.delete');
+
+            btDelete.forEach(item => {
+                item.addEventListener('click', function () {
+                    customerId = +item.getAttribute('data-id');
+                    
+
+                     // Tìm khách hàng trong mảng customers dựa trên customerId
+                    let customer = customers.find(customer => customer.id === customerId);
+
+                    if (customer) {
+                        // Xóa khách hàng khỏi mảng customers
+                        customers = customers.filter(customer => customer.id !== customerId);
+
+                        // Cập nhật giao diện bằng cách xóa dòng (row) tương ứng trong bảng
+                        let row = item.closest("tr");
+                        row.remove();
+                    }
+
+                })
+            })
+        }
+        addEvenDeleted();
+        
+
+        
+
+
+
+
+
+
+        var selectElement = document.getElementById("recipientT");
+        console.log(customers)
+        
+        customers.forEach(function(customer) {
+            console.log(customer)
+        var option = document.createElement("option");
+        console.log(option);
+        option.value = customer.id;
+        option.text = customer.name;
+        selectElement.appendChild(option);
+});
+</script>
+
+</body>
+</html>

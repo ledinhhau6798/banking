@@ -82,7 +82,9 @@
         let transferAmount = Number(document.getElementById("transfer").value);
         let transactionFee = transferAmount * fee / 100;
         document.getElementById("total").value = Math.round(transactionFee + transferAmount);
-    })
+    });
+
+
 </script>
 <footer class="container-fluid">
     <th:block th:if="${success == true}">
@@ -104,10 +106,15 @@
     <th:block th:if="${error == true}">
         <div class="error">
             <ul class="container">
-                <li th:each="err : ${#fields.errors('tranfer.*')}" th:text="${err}"></li>
+                <li th:each="err : ${#fields.errors('transfer.*')}" th:text="${err}"></li>
             </ul>
         </div>
     </th:block>
+    <div class="container">
+        <ul>
+            <li th:each="err : ${#fields.errors('transfer.*')}" th:text="${err}"></li>
+        </ul>
+    </div>
 
 
 </footer>

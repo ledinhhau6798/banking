@@ -25,11 +25,17 @@
                 <div class="col-md-6 mb-3">
                     <label for="fullName" class="form-label">Full Name</label>
                     <input type="text" class="form-control" id="fullName" name="fullName" th:field="*{fullName}">
+                    <th:block th:if="${#fields.hasErrors('fullName')}">
+                        <span class="text-danger" th:text="${#fields.errors('fullName')}"></span>
+                    </th:block>
                 </div>
 
                 <div class="col-md-6 mb-3">
                     <label for="email" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="email" name="email" th:field="*{email}">
+                    <input type="text" class="form-control" id="email" name="email" th:field="*{email}">
+                    <th:block th:if="${#fields.hasErrors('email')}">
+                        <span class="text-danger" th:text="${#fields.errors('email')}"></span>
+                    </th:block>
                 </div>
             </div>
             <div class="row">
@@ -48,30 +54,31 @@
             </button>
         </form>
     </div>
-</div>
-<footer class="container-fluid">
-    <div>
-    <th:block th:if="${success == true}">
-        <div class="success">
-            <ul class="container">
-                <li th:text="${messages}"></li>
-            </ul>
+    <footer class="container-fluid">
+        <div>
+            <th:block th:if="${success == true}">
+                <div class="success">
+                    <ul class="container">
+                        <li th:text="${messages}"></li>
+                    </ul>
+                </div>
+            </th:block>
         </div>
-    </th:block>
-    </div>
-    <div class="error-area">
-                <th:block th:if="${hasError} == true">
-                    <ul>
-                        <li th:each="err : ${#fields.errors('customer.*')}" th:text="${err}"></li>
-                    </ul>
-                </th:block>
-                <th:block th:if="${notValid} == true">
-                    <ul>
-                        <li th:text="${message}"></li>
-                    </ul>
-                </th:block>
-            </div>
-</footer>
+        <div class="error-area">
+<!--            <th:block th:if="${hasError} == true">-->
+<!--                <ul>-->
+<!--                    <li th:each="err : ${#fields.errors('customer.*')}" th:text="${err}"></li>-->
+<!--                </ul>-->
+<!--            </th:block>-->
+            <th:block th:if="${notValid} == true">
+                <ul>
+                    <li th:text="${message}"></li>
+                </ul>
+            </th:block>
+        </div>
+    </footer>
+</div>
+
 
 </body>
 </html>

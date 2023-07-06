@@ -49,16 +49,18 @@ public class Deposit extends BaseEntity implements Validator {
 
 
         BigDecimal transactionAmount = deposit.getTransactionAmount();
+        if (transactionAmount == (null) || transactionAmount.equals("") ){
+            errors.rejectValue("transactionAmount", "deposit.transactionAmount.null");
+            return;
+        }
+
         BigDecimal maxTransactionAmount = BigDecimal.valueOf(999999999L);
 
         BigDecimal maxBalanceAmount = BigDecimal.valueOf(1000000000L);
         BigDecimal updateBalance = deposit.customer.getBalance().add(transactionAmount);
 
 
-        if (transactionAmount == (null)) {
-            errors.rejectValue("transactionAmount", "deposit.transactionAmount.null");
-            return;
-        }
+
         if (transactionAmount.compareTo(BigDecimal.ZERO) <= 0) {
             errors.rejectValue("transactionAmount", "deposit.transactionAmount.zero");
         }

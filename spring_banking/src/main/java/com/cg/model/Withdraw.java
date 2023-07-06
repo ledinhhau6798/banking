@@ -40,13 +40,15 @@ public class Withdraw extends BaseEntity implements Validator {
         Withdraw withdraw = (Withdraw) target;
 
         BigDecimal transactionAmount = withdraw.getTransactionAmount();
-        BigDecimal updateBalance = withdraw.customer.getBalance().subtract(transactionAmount);
-        BigDecimal minBalance = BigDecimal.valueOf(0L);
-
         if (transactionAmount == (null)) {
             errors.rejectValue("transactionAmount", "withdraw.transactionAmount.null");
             return;
         }
+
+        BigDecimal updateBalance = withdraw.customer.getBalance().subtract(transactionAmount);
+        BigDecimal minBalance = BigDecimal.valueOf(0L);
+
+
         if (transactionAmount.compareTo(BigDecimal.ZERO) < 0){
             errors.rejectValue("transactionAmount","withdraw.transactionAmount.zero");
         }

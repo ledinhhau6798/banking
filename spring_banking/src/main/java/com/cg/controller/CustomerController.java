@@ -88,7 +88,9 @@ public class CustomerController {
             Optional<Customer> customerOptional = customerService.findById(customerId);
 
             if (customerOptional.isEmpty()) {
-                return "redirect:/errors/404";
+                model.addAttribute("error", true);
+                model.addAttribute("message", "ID khách hàng không tồn tại");
+                return "/errors/404";
             }
 
             Customer customer = customerOptional.get();
@@ -102,7 +104,7 @@ public class CustomerController {
     }
 
     @PostMapping("/edit/{id}")
-    public String toUpdate(@PathVariable Long id, Model model, @ModelAttribute Customer customer,BindingResult bindingResult) {
+    public String toUpdate(@PathVariable Long id, Model model, @ModelAttribute Customer customer, BindingResult bindingResult) {
         Optional<Customer> customerOptional = customerService.findById(id);
 
         if (bindingResult.hasFieldErrors()) {
@@ -122,20 +124,23 @@ public class CustomerController {
 
         if (!customerOptional.isPresent()) {
             model.addAttribute("error", true);
+            model.addAttribute("message","Id không tồn tại");
+            return "/errors/404";
         } else {
             customer.setId(id);
             customer.setBalance(customerOptional.get().getBalance());
             customerService.save(customer);
             model.addAttribute("customer", customer);
             model.addAttribute("success", true);
-            model.addAttribute("messages", "sửa thành công");
+            model.addAttribute("message", "sửa thành công");
+            return "redirect:/customers";
         }
 
 
 //        List<Customer> customers = customerService.findAll();
 
 
-        return "redirect:/customers";
+
     }
 
     @GetMapping("/delete/{id}")
@@ -156,16 +161,17 @@ public class CustomerController {
     }
 
     @GetMapping("/deposit/{id}")
-    public String showDeposit(@PathVariable String  id, Model model) {
-
+    public String showDeposit(@PathVariable String id, Model model) {
 
 
         try {
             Long customerId = Long.parseLong(id);
             Optional<Customer> customerOptional = customerService.findById(customerId);
 
-            if (customerOptional.isEmpty()) {
-                return "redirect:/errors/404";
+            if (!customerOptional.isPresent()) {
+                model.addAttribute("error", true);
+                model.addAttribute("message", "ID khách hàng không tồn tại");
+                return "/errors/404";
             }
 
             Customer customer = customerOptional.get();
@@ -195,6 +201,7 @@ public class CustomerController {
         if (customerOptional.isEmpty()) {
             model.addAttribute("error", true);
             model.addAttribute("message", "ID khách hàng không tồn tại");
+            return "/customer/deposit";
         } else {
             try {
                 Customer customer = customerService.deposit(deposit);
@@ -216,15 +223,16 @@ public class CustomerController {
 
         Optional<Customer> customerOptional = customerService.findById(id);
 
-        if (!customerOptional.isPresent()){
-            model.addAttribute("error",true);
-            model.addAttribute("message","Id khách hàng không tồn tại");
+        if (!customerOptional.isPresent()) {
+            model.addAttribute("error", true);
+            model.addAttribute("message", "Id khách hàng không tồn tại");
+            return "/errors/404";
         } else {
             Customer customer = customerOptional.get();
             Withdraw withdraw = new Withdraw();
             withdraw.setCustomer(customer);
 
-            model.addAttribute("withdraw",withdraw);
+            model.addAttribute("withdraw", withdraw);
         }
         return "/customer/withdraw";
 
@@ -232,23 +240,23 @@ public class CustomerController {
     }
 
     @PostMapping("/withdraw/{customerId}")
-    public String toWithdraw(@PathVariable Long customerId,Model model,@ModelAttribute Withdraw withdraw, BindingResult bindingResult ) {
-        new Withdraw().validate(withdraw,bindingResult);
-        if (bindingResult.hasFieldErrors()){
+    public String toWithdraw(@PathVariable Long customerId, Model model, @ModelAttribute Withdraw withdraw, BindingResult bindingResult) {
+        new Withdraw().validate(withdraw, bindingResult);
+        if (bindingResult.hasFieldErrors()) {
             return "/customer/withdraw";
         }
         Optional<Customer> customerOptional = customerService.findById(customerId);
 
-        if (!customerOptional.isPresent()){
-            model.addAttribute("error",true);
-            model.addAttribute("message","Id không tồn tại");
-        }else {
+        if (!customerOptional.isPresent()) {
+            model.addAttribute("error", true);
+            model.addAttribute("message", "Id không tồn tại");
+        } else {
             try {
                 Customer customer = customerService.withdraw(withdraw);
                 withdraw.setCustomer(customer);
 
-                model.addAttribute("withdraw",withdraw);
-            }catch (Exception e){
+                model.addAttribute("withdraw", withdraw);
+            } catch (Exception e) {
                 return "/errors/500";
             }
         }
@@ -259,28 +267,40 @@ public class CustomerController {
     @GetMapping("/transfer/{customerId}")
     public String showTransfer(@PathVariable Long customerId, Model model) {
         Optional<Customer> customerOptional = customerService.findById(customerId);
-        if (!customerOptional.isPresent()){
-            model.addAttribute("error",true);
-            model.addAttribute("message","Id khách hàng không tồn tại");
+        if (!customerOptional.isPresent()) {
+            model.addAttribute("error", true);
+            model.addAttribute("message", "Id khách hàng không tồn tại");
+            return "/errors/404";
         } else {
             Customer customer = customerOptional.get();
             Transfer transfer = new Transfer();
             transfer.setSender(customer);
 
-            model.addAttribute("transfer",transfer);
+            model.addAttribute("transfer", transfer);
             List<Customer> recipients = customerService.findAllByIdNotAndDeletedIsFalse(customerId);
-            model.addAttribute("recipients",recipients);
+            model.addAttribute("recipients", recipients);
         }
         return "/customer/transfer";
 
     }
 
     @PostMapping("/transfer/{customerId}")
-    public String toTransfer(@PathVariable Long customerId, Model model, @ModelAttribute Transfer transfer) {
+    public String toTransfer(@PathVariable Long customerId, Model model, @ModelAttribute Transfer transfer, BindingResult bindingResult) {
+
+        new Transfer().validate(transfer, bindingResult);
+        if (bindingResult.hasFieldErrors()) {
+            List<Customer> recipients = customerService.findAllByIdNotAndDeletedIsFalse(customerId);
+
+            model.addAttribute("recipients", recipients);
+            model.addAttribute("transfer", transfer);
+            return "/customer/transfer";
+        }
+
+
         Optional<Customer> customerOptional = customerService.findById(customerId);
         List<Customer> recipients = customerService.findAllByIdNotAndDeletedIsFalse(customerId);
 
-         model.addAttribute("recipients", recipients);
+        model.addAttribute("recipients", recipients);
         model.addAttribute("transfer", transfer);
 
         if (!customerOptional.isPresent()) {
@@ -340,7 +360,7 @@ public class CustomerController {
     }
 
     @GetMapping("/transferInfo")
-    public String showTransferInfo(Model model){
+    public String showTransferInfo(Model model) {
         List<Transfer> transfers = transferService.findAll();
 
         model.addAttribute("transfers", transfers);
@@ -353,15 +373,16 @@ public class CustomerController {
     }
 
     @GetMapping("/depositInfo")
-    public String showDepositInfo(Model model){
+    public String showDepositInfo(Model model) {
         List<Deposit> deposits = depositService.findAll();
-        model.addAttribute("deposits",deposits);
+        model.addAttribute("deposits", deposits);
         return "/customer/depositInfo";
     }
+
     @GetMapping("/withdrawInfo")
-    public String showWithdrawInfo(Model model){
+    public String showWithdrawInfo(Model model) {
         List<Withdraw> withdraws = withdrawService.findAll();
-        model.addAttribute("withdraws",withdraws);
+        model.addAttribute("withdraws", withdraws);
         return "/customer/withdrawInfo";
     }
 

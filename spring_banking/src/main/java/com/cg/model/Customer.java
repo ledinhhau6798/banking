@@ -1,11 +1,13 @@
 package com.cg.model;
 
 
+import com.cg.utils.ValidateUtils;
 import lombok.*;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -72,6 +74,9 @@ public class Customer extends BaseEntity implements Validator {
         String email = customer.email;
             if (email.length() == 0) {
                 errors.rejectValue("email","email.empty");
+            }else
+            if (!ValidateUtils.isEmail(email)){
+                errors.rejectValue("email","email.type");
             }
 
     }
