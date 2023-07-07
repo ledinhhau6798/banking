@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>List of customers</title>
+    <link rel="stylesheet" href="/assets/bootstrap/v-5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets//fontawesome/v-5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="/assets/sweetalert2/sweetalert2.min.css">
+    <link rel="stylesheet" href="./assets/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <nav class="navbar navbar-expand-lg bg-body-navbar">
+                <div class="container-fluid">
+                    <h1 class="navbar-brand">List of customers</h1>
+                    <div class="collapse navbar-collapse" id="navbarScroll">
+                        <div class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll"
+                            style="--bs-scroll-height: 100px;">
+                        </div>
+                        <form class="d-flex" role="search">
+                            <button type="button" class="btn btn-outline-light " id="btnHistoryTransfer">
+                                <i class=" fa fa-history" aria-hidden="true"></i>
+                                <span>Transfer Information</span>
+                            </button>
+                            <button class="btn btn-outline-light" type="button" data-bs-toggle="modal"
+                                data-bs-target="#modalCreate">Create</button>
+                        </form>
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+        <table class="table table-hover" id="tbCustomer" >
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Full Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Phone</th>
+                <th scope="col">Balance</th>
+                <th scope="col">Address</th>
+                <th class="text-center"scope="col-5">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+            </tbody>
+          </table>
+
+     <!-- Modal create -->
+    <div class="modal fade" id="modalCreate" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5">Modal create customer</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form class="forms-sample" method="post">
+                    <div class="row">
+                        <div class="form-group col-6">
+                            <label for="fullNameCre">Full Name</label>
+                            <input type="text" class="form-control" id="fullNameCre"
+                                placeholder="Enter Name">
+                        </div>
+                        <div class="form-group col-6">
+                            <label for="emailCre">Email</label>
+                            <input type="email" class="form-control" id="emailCre" 
+                                placeholder="Enter Email">
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="form-group col-6">
+                            <label for="phoneCre">Phone</label>
+                            <input type="tel" class="form-control" id="phoneCre"
+                                placeholder="Enter Phone">
+                        </div>
+                        <div class="form-group col-6">
+                            <label for="addressCre">Address</label>
+                            <input type="text" class="form-control" id="addressCre" 
+                                placeholder="Enter Address">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" id="btnCreate" class="btn btn-outline-primary">Create</button>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <!-- Modal update -->
+    <div class="modal fade" id="modalUpdate" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5">Modal update customer</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="error-area" style="color: red;"></div>
+                <form method="post">
+                    <div class="row mb-3">
+                        <div class="col-lg-6">
+                            <label class="fw-bold">Full Name</label>
+                            <input type="text" class="form-control" id="fullNameUp">
+                        </div>
+                        <div class="col-lg-6">
+                            <label class="fw-bold">Email</label>
+                            <input type="email" class="form-control" id="emailUp">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-lg-6">
+                            <label class="fw-bold">Phone</label>
+                            <input type="tel" class="form-control" id="phoneUp">
+                        </div>
+                        <div class="col-lg-6">
+                            <label class="fw-bold">Address</label>
+                            <input type="text" class="form-control" id="addressUp">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" id="btnUpdate" class="btn btn-primary">Update</button>
+            </div>
+        </div>
+    </div>
+    </div>
+    <!-- Modal deposit -->
+    <div class="modal fade " id="modalDeposit" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5">Modal Deposit customer</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="error-area" style="color: red;"></div>
+                <form method="post">
+                    <div class="row mb-3">
+                        <div class="col-lg-6">
+                            <label class="fw-bold">Full Name</label>
+                            <input type="text" class="form-control" id="fullNameDe">
+                        </div>
+                        <div class="col-lg-6">
+                            <label class="fw-bold">Email</label>
+                            <input type="email" class="form-control" id="emailDe">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-lg-6">
+                            <label class="fw-bold">Phone</label>
+                            <input type="tel" class="form-control" id="phoneDe">
+                        </div>
+                        <div class="col-lg-6">
+                            <label class="fw-bold">Address</label>
+                            <input type="text" class="form-control" id="addressDe">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-lg-6">
+                            <label class="fw-bold">Recharge</label>
+                            <input type="number" class="form-control" id="rechargeDe"> 
+                        </div>
+                        <div class="col-lg-6">
+                            <label class="fw-bold">Balance</label>
+                            <input type="text" class="form-control" id="balanceDe">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" id="btnDeposit" class="btn btn-primary">Deposit</button>
+            </div>
+        </div>
+    </div>
+    </div>
+
+     <!-- Modal withdraw -->
+    <div class="modal fade " id="modalWithdraw" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+     aria-hidden="true">
+     <div class="modal-dialog modal-lg modal-dialog-centered">
+         <div class="modal-content">
+             <div class="modal-header">
+                 <h1 class="modal-title fs-5">Modal withdraw customer</h1>
+                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+             </div>
+             <div class="modal-body">
+                 <div class="error-area" style="color: red;"></div>
+                 <form method="post">
+                     <div class="row mb-3">
+                         <div class="col-lg-6">
+                             <label class="fw-bold">Full Name</label>
+                             <input type="text" class="form-control" id="fullNameWi">
+                         </div>
+                         <div class="col-lg-6">
+                             <label class="fw-bold">Email</label>
+                             <input type="email" class="form-control" id="emailWi">
+                         </div>
+                     </div>
+                     <div class="row mb-3">
+                         <div class="col-lg-6">
+                             <label class="fw-bold">Phone</label>
+                             <input type="tel" class="form-control" id="phoneWi">
+                         </div>
+                         <div class="col-lg-6">
+                             <label class="fw-bold">Address</label>
+                             <input type="text" class="form-control" id="addressWi">
+                         </div>
+                     </div>
+                     <div class="row mb-3">
+                         <div class="col-lg-6">
+                             <label class="fw-bold">recharge</label>
+                             <input type="number" class="form-control" id="rechargeWi"> 
+                         </div>
+                         <div class="col-lg-6">
+                             <label class="fw-bold">Balance</label>
+                             <input type="text" class="form-control" id="balanceWi">
+                         </div>
+                     </div>
+                 </form>
+             </div>
+             <div class="modal-footer">
+                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                 <button type="button" id="btnWithdraw" class="btn btn-primary">Withdraw</button>
+             </div>
+         </div>
+     </div>
+    </div>
+
+      <!-- Modal Transfer -->
+    <div class="modal fade " id="modalTransfer" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+      aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h1 class="modal-title fs-5">Modal Transfer customer</h1>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                  <div class="error-area" style="color: red;"></div>
+                  <form method="post">
+                    <div class="row mt-3">
+                        <div class="mb-3 float-left col-lg-3 col-sm-12 col-md-6">
+                            <label class="form-label">Sender ID</label>
+                            <input type="number" class="form-control" id="senderIDT"
+                                    readonly
+                            >
+                        </div>
+                        <div class="mb-3 float-left col-lg-3 col-sm-12 col-md-6">
+                            <label  class="form-label">Sender Name</label>
+                            <input type="text" class="form-control" id="senderNameT"
+                                   readonly
+                            >
+                        </div>
+                        <div class="mb-3 float-left col-lg-3 col-sm-12 col-md-6">
+                            <label class="form-label">Sender Email</label>
+                            <input type="email" class="form-control" id="emailT"
+                                    readonly
+                            >
+                        </div>
+                        <div class="mb-3 float-left col-lg-3 col-sm-12 col-md-6">
+                            <label  class="form-label">Sender Balance</label>
+                            <input type="number" class="form-control" id="balanceT"
+                                   readonly
+                            >
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="mb-3 float-left col-lg-3 col-sm-12 col-md-6">
+                            <label class="form-label">Recipient Name</label>
+                            
+                            
+                            
+                            <select class="form-select" name="recipient.id" id="recipientSelect">
+                                <option value="" selected disabled>Select recipient</option>
+                            </select>
+                            
+
+
+                        </div>
+                        <div class="mb-3 float-left col-lg-3 col-sm-12 col-md-6">
+                            <label  class="form-label">Transfer Amount (VND)</label>
+                            <input type="number" class="form-control" id="transfer"  >
+                        </div>
+                        <div class="mb-3 float-left col-lg-3 col-sm-12 col-md-6">
+                            <label  class="form-label">Fee (%)</label>
+                            <input type="number" class="form-control" id="fees"  readonly>
+                        </div>
+                        <div class="mb-3 float-left col-lg-3 col-sm-12 col-md-6">
+                            <label class="form-label">Total Amount (VND)</label>
+                            <input type="number" class="form-control" id="total" readonly>
+                        </div>
+                    </div>
+                  </form>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <button type="button" id="btnTransfer" class="btn btn-outline-warning">Transfer</button>
+              </div>
+          </div>
+      </div>
+    </div>
+
+      <!-- Modal History Transfer -->
+    <div class="modal fade" id="mdHistoryTransfer" tabindex="-1" aria-hidden="true" data-bs-backdrop="static"
+            data-bs-keyboard="false">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal History Transfer</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <table id="tbHistoryTransfer" class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Sender ID</th>
+                                    <th>Recipient ID</th>
+                                    <th>Fees (%)</th>
+                                    <th>Fees Amount</th>
+                                    <th>Transfer Amount</th>
+                                    <th>Transaction Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+    </div>
+
+    </div>
+
+    <script src="/assets/jquery/jquery-3.6.4.min.js"></script>
+    <script src="/assets/bootstrap/v-5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/sweetalert2/sweetalert2.all.min.js"></script>
+<script>
+        let id = 1;
+        let customerId = 0;
+        const renderCustomer = (obj) => {
+            return `
+                <tr id="tr_${obj.id}">
+                    <th scope="row">${obj.id}</th>
+                    <td>${obj.fullName}</td>
+                    <td>${obj.email}</td>
+                    <td>${obj.phone}</td>
+                    <td>${obj.balance}</td>
+                    <td>${obj.address}</td>
+                    <td class="text-center">
+                        <button class="btn btn-outline-secondary edit" 
+                            data-id="${obj.id}"
+                        >
+                            <i class="fa fa-pencil-alt"></i>
+                        </button>
+                        <button class="btn btn-outline-success deposit"
+                            data-id="${obj.id}"
+                        >
+                            <i class="fas fa-plus"></i>
+                        </button>
+                        <button class="btn btn-outline-warning withdraw"
+                            data-id="${obj.id}"
+                        >
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <button class="btn btn-outline-primary transfer"
+                            data-id="${obj.id}"
+                        >
+                            <i class="fas fa-exchange-alt"></i>
+                        </button>
+                        <button class="btn btn-outline-danger delete"
+                            data-id="${obj.id}"
+                        >
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </td>
+                </tr>
+            `
+        }
+
+        // hiển thị danh sách
+        const getAllCustomers = () => {
+            $.ajax({
+                type:'GET',
+                url:'http://localhost:3300/customers?deleted=0'
+            })
+            .done((data) => {
+                $('#tbCustomer tbody').empty();
+                
+                $.each(data,(index,item) => {
+                    const str = renderCustomer(item)
+                    $('#tbCustomer tbody').prepend(str)
+                })
+                // gọi
+                handleAddEventShowModalUpdate();
+                handleAddEventShowModalDeposit();
+                handleAddEventShowModalWithdraw();
+                handleAddEventShowModalTransfer();
+                handleAddEventConfirmDelete();
+
+            }) 
+            .fail((error) => {
+                console.log(error);
+            })
+        }
+        // gọi danh sách
+        getAllCustomers();
+
+        // thêm
+        $('#btnCreate').on('click',() =>{
+            const fullName = $('#fullNameCre').val()
+            const email = $('#emailCre').val()
+            const phone = $('#phoneCre').val()
+            const address = $('#addressCre').val()
+            const balance = 0
+            const deleted = 0
+
+            const obj = {
+                fullName,
+                email,
+                phone,
+                balance,
+                address,
+                deleted
+            }
+            
+
+            $.ajax({
+                type: 'POST',
+                url: 'http://localhost:3300/customers',
+                data: obj
+            })
+                .done((data) => {
+                    const str = renderCustomer(data)
+                    
+                    $('#tblCustomer tbody').prepend(str)
+                    getAllCustomers();
+                    $('#modalCreate').modal('hide')
+                    
+                })
+                .fail((error) => {
+                    console.log(error);
+                })
+               
+        
+        })
+
+        // lấy id
+        const findByCustomerId = (id) => {
+            return $.ajax({
+                url: 'http://localhost:3300/customers/' + id
+            })
+        }
+
+        // mở Edit
+        const handleAddEventShowModalUpdate = () => {
+            $('.edit').on('click', function() {
+                customerId = $(this).data('id')
+
+                findByCustomerId(customerId).then((data) => {
+                    $('#fullNameUp').val(data.fullName)
+                    $('#emailUp').val(data.email)
+                    $('#phoneUp').val(data.phone)
+                    $('#addressUp').val(data.address)
+                   $('#modalUpdate').modal('show')
+            })
+                .catch((error) => {
+                console.log(error);
+                })
+            })
+        }
+
+        // mở deposit
+        const handleAddEventShowModalDeposit = () => {
+            $('.deposit').on('click', function() {
+                customerId = $(this).data('id')
+
+                findByCustomerId(customerId).then((data) => {
+                    $('#fullNameDe').val(data.fullName)
+                    $('#emailDe').val(data.email)
+                    $('#phoneDe').val(data.phone)
+                    $('#addressDe').val(data.address)
+                    $('#rechargeDe').val(0)
+                    $('#balanceDe').val(data.balance)
+
+                   $('#modalDeposit').modal('show')
+            })
+                .catch((error) => {
+                console.log(error);
+                })
+            })
+        }
+
+        // mở withdraw
+        const handleAddEventShowModalWithdraw = () => {
+            $('.withdraw').on('click', function() {
+                customerId = $(this).data('id')
+
+                findByCustomerId(customerId).then((data) => {
+                    $('#fullNameWi').val(data.fullName)
+                    $('#emailWi').val(data.email)
+                    $('#phoneWi').val(data.phone)
+                    $('#addressWi').val(data.address)
+                    $('#rechargeWi').val(0)
+                    $('#balanceWi').val(data.balance)
+
+                   $('#modalWithdraw').modal('show')
+            })
+                .catch((error) => {
+                console.log(error);
+                })
+            })
+        }
+
+        // lấy id trong recipient chuyển sang name trong select option
+        function getRecipients(customerId) {
+            $.ajax({
+                url: 'http://localhost:3300/customers',
+                type: 'GET',
+                dataType: 'json',
+                success: function (customers) {
+                    
+                    var recipientSelect = $('#recipientSelect');
+                    recipientSelect.empty();
+                    recipientSelect.append($('<option>').val('').text('Select recipient'));
+
+                    $.each(customers, function (index, customer) {
+                        
+                        if (customer.id !== customerId && customer.deleted === 0) {
+                            recipientSelect.append($('<option>').val(customer.id).text(customer.id + ' - ' + customer.fullName));
+                        }
+                    });
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log('Error: ' + textStatus + ' ' + errorThrown);
+                }
+            });
+        }
+
+        // mở transfer
+        const handleAddEventShowModalTransfer = () => {
+            $('.transfer').on('click', function() {
+                customerId = $(this).data('id')
+
+                findByCustomerId(customerId).then((data) => {
+                    $('#senderIDT').val(data.id)
+                    $('#senderNameT').val(data.fullName)
+                    $('#emailT').val(data.email)
+                    $('#balanceT').val(data.balance)
+                    getRecipients(customerId);
+                    $('#transfer').val()
+                    $('#fees').val(10)
+                    $('#total').val()
+
+                   $('#modalTransfer').modal('show')
+            })
+                .catch((error) => {
+                console.log(error);
+                })
+            })
+        }
+        
+        
+        
+        // chạy Edit
+        $('#btnUpdate').on('click', () => {
+            let fullName = $('#fullNameUp').val()
+            let email = $('#emailUp').val()
+            let phone = $('#phoneUp').val()
+            let address = $('#addressUp').val()
+            
+            const obj = {
+                fullName,
+                email,
+                phone,
+                address,
+                
+            }
+
+            $.ajax({
+                headers: {
+                    'accept': 'application/json',
+                    'content-type': 'application/json'
+                },
+                type: 'PATCH',
+                url: 'http://localhost:3300/customers/' + customerId,
+                data: JSON.stringify(obj)
+            })
+                .done((data) => {
+                    const str = renderCustomer(data)
+                    $('#tr_' + customerId).replaceWith(str)
+                    $('#modalUpdate').modal('hide')
+
+                    handleAddEventShowModalUpdate();
+                    handleAddEventShowModalDeposit();
+                    handleAddEventShowModalWithdraw();
+                    handleAddEventShowModalTransfer();
+                    handleAddEventConfirmDelete();
+                    
+
+                })
+                .fail((jqXHR) => {
+                    const responseJSON = jqXHR.responseJSON
+
+                    let str = '<ul>'
+                    $.each(responseJSON, (k, v) => {
+                        str += `<li>${v}</li>`
+                    })
+
+                    str += '</ul>'
+
+
+                    $('.error-area').empty().append(str);
+                })
+        })
+
+
+        // chạy Deposit
+        $('#btnDeposit').on('click', () => {
+            let fullName = $('#fullNameDe').val()
+            let email = $('#emailDe').val()
+            let phone = $('#phoneDe').val()
+            let address = $('#addressDe').val()
+            let recharge = +$('#rechargeDe').val()
+            let balance = +$('#balanceDe').val() + +$('#rechargeDe').val()
+
+
+            const obj = {
+                fullName,
+                email,
+                phone,
+                address,
+                recharge,
+                balance
+            }
+
+            $.ajax({
+                headers: {
+                    'accept': 'application/json',
+                    'content-type': 'application/json'
+                },
+                type: 'PATCH',
+                url: 'http://localhost:3300/customers/' + customerId,
+                data: JSON.stringify(obj)
+            })
+                .done((data) => {
+                    const str = renderCustomer(data)
+                    $('#tr_' + customerId).replaceWith(str)
+                    $('#modalDeposit').modal('hide')
+
+                    handleAddEventShowModalUpdate();
+                    handleAddEventShowModalDeposit();
+                    handleAddEventShowModalWithdraw();
+                    handleAddEventShowModalTransfer();
+                    handleAddEventConfirmDelete();
+                    
+
+                })
+                .fail((jqXHR) => {
+                    const responseJSON = jqXHR.responseJSON
+
+                    let str = '<ul>'
+                    $.each(responseJSON, (k, v) => {
+                        str += `<li>${v}</li>`
+                    })
+
+                    str += '</ul>'
+
+
+                    $('.error-area').empty().append(str);
+                })
+        })
+
+        // chạy Withdraw
+        $('#btnWithdraw').on('click', () => {
+            // let fullName = $('#fullNameWi').val()
+            // let email = $('#emailWi').val()
+            // let phone = $('#phoneWi').val()
+            // let address = $('#addressWi').val()
+            let recharge = +$('#rechargeWi').val()
+            let balance =   $('#balanceWi').val() - $('#rechargeWi').val()
+
+
+            const obj = {
+                // fullName,
+                // email,
+                // phone,
+                // address,
+                recharge,
+                balance
+            }
+
+            $.ajax({
+                headers: {
+                    'accept': 'application/json',
+                    'content-type': 'application/json'
+                },
+                type: 'PATCH',
+                url: 'http://localhost:3300/customers/' + customerId,
+                data: JSON.stringify(obj)
+            })
+                .done((data) => {
+                    const str = renderCustomer(data)
+                    $('#tr_' + customerId).replaceWith(str)
+                    $('#modalWithdraw').modal('hide')
+
+                    handleAddEventShowModalUpdate();
+                    handleAddEventShowModalDeposit();
+                    handleAddEventShowModalWithdraw();
+                    handleAddEventShowModalTransfer();
+                    handleAddEventConfirmDelete();
+                    
+
+                })
+                .fail((jqXHR) => {
+                    const responseJSON = jqXHR.responseJSON
+
+                    let str = '<ul>'
+                    $.each(responseJSON, (k, v) => {
+                        str += `<li>${v}</li>`
+                    })
+
+                    str += '</ul>'
+
+
+                    $('.error-area').empty().append(str);
+                })
+        })
+
+        // chạy Transfer
+        $('#btnTransfer').on('click', () => {
+            let recipientId = $('#recipientSelect').val();
+            
+            findByCustomerId(customerId).then((data) => {
+                let customer = data;
+                let currenBalance = customer.balance;
+                let transactionAmount = +$('#total').val();
+                let newBalance = currenBalance - transactionAmount;
+                customer.balance = newBalance
+                
+                
+                
+                findByCustomerId(recipientId).then((data) => {
+                    
+                    let recipient = data;
+                   
+                    let transferAmount = +$('#transfer').val();
+                    let currentBalanceRecipient = recipient.balance;
+                    let newBalanceRecipient = transactionAmount + currentBalanceRecipient;
+                    recipient.balance = newBalanceRecipient;
+                    
+                    
+                    let fees = +$('#fees').val();
+                    let feesAmount = (fees * transactionAmount) / 100;
+
+                    // lấy dữ liệu để chuyển qua transfer hitory
+                    let transfer = {
+                        senderId: customer.id,
+                        recipientId: recipient.id,
+                        fees: fees,
+                        feesAmount: feesAmount,
+                        transferAmount: transferAmount,
+                        transactionAmount: transactionAmount
+                    }
+
+                    $.ajax({
+                        type: 'PATCH',
+                        headers: {
+                            'accept': 'application/json',
+                            'content-type': 'application/json'
+                        },
+                        url: 'http://localhost:3300/customers/' + recipient.id,
+                        data: JSON.stringify(recipient)
+                    })
+                    .done((data) => {
+                        let str = renderCustomer(data);
+                        $('#tr_' + recipient.id).replaceWith(str);
+                    }),
+
+                    // đưa dữ liệu sang trang transfer hitory
+                    $.ajax({
+                            type: 'POST',
+                            headers: {
+                                'accept': 'application/json',
+                                'content-type': 'application/json'
+                            },
+                            url: 'http://localhost:3300/transfers',
+                            data: JSON.stringify(transfer)
+                        })
+                    
+                })
+                $.ajax({
+                    type: 'PATCH',
+                    headers: {
+                        'accept': 'application/json',
+                        'content-type': 'application/json'
+                    },
+                    url: 'http://localhost:3300/customers/' + customer.id,
+                    data: JSON.stringify(customer)
+                }).done((data) => {
+                    let str = renderCustomer(data);
+                    $('#tr_' + customerId).replaceWith(str);
+
+                    $('#transfer').val('');
+                    $('#total').val('');
+                    $('#modalTransfer').modal('hide');
+
+                    handleAddEventShowModalUpdate();
+                    handleAddEventShowModalDeposit();
+                    handleAddEventShowModalWithdraw();
+                    handleAddEventShowModalTransfer();
+                    handleAddEventConfirmDelete();
+                    
+                   
+                })
+            })
+            
+        });
+
+
+        // show delete
+        const handleAddEventConfirmDelete = () => {
+            $('.delete').on('click', function () {
+                customerId = $(this).data('id')
+
+                Swal.fire({
+                    title: 'bạn có muốn xóa?',
+                    text: "xóa đi còn chờ gì nữa?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        doDelete(customerId).then(() => {
+                            $('#tr_' + customerId).remove()
+
+                            Swal.fire({
+                                position: 'top-end',
+                                icon: 'success',
+                                title: 'xóa thành công',
+                                showConfirmButton: false,
+                                timer: 1500
+                            })
+                        })
+                            .catch((error) => {
+                                console.log(error);
+                            })
+                    }
+                })
+            })
+        }
+        // sửa deleted về 1
+        const doDelete = (id) => {
+            const obj = {
+                deleted: 1
+            }
+
+            return $.ajax({
+                headers: {
+                    'accept': 'application/json',
+                    'content-type': 'application/json'
+                },
+                type: 'PATCH',
+                url: 'http://localhost:3300/customers/' + id,
+                data: JSON.stringify(obj)
+            })
+        }
+
+        // --------------------------------------------------------------------------------------------------
+
+
+        function renderTransfer(obj) {
+            return `<tr id='trDP_${obj.id}'>
+            <td>${obj.id}</td>
+            <td>${obj.senderId}</td>
+            <td>${obj.recipientId}</td>
+            <td>${obj.fees}</td>
+            <td>${obj.feesAmount}</td>
+            <td>${obj.transferAmount}</td>
+            <td>${obj.transactionAmount}</td>
+        </tr>`
+                ;
+        }
+
+
+        // show Transfer hitory
+        function getAllTransfer() {
+            $.ajax({
+                type: 'GET',
+                url: 'http://localhost:3300/transfers'
+            })
+                .done((data) => {
+                    let str = '';
+                    $.each(data, (index, item) => {
+                        str += renderTransfer(item);
+                    })
+                    $('#tbHistoryTransfer tbody').empty(str)
+                    $('#tbHistoryTransfer tbody').append(str)
+                    $('#mdHistoryTransfer').modal('show');
+                })
+                .fail((error) => {
+                    console.error(error);
+                })
+        }
+        
+
+
+        
+
+
+        $('#btnHistoryTransfer').on('click', function () {
+            getAllTransfer();
+        });
+
+
+
+        // điều chỉnh total tăng thêm nhập số tiền
+        document.addEventListener("input", () => {
+            let fee = Number(document.getElementById("fees").value);
+            let transferAmount = Number(document.getElementById("transfer").value);
+            let transactionFee = transferAmount * fee / 100;
+            document.getElementById("total").value = Math.round(transactionFee + transferAmount);
+        })
+
+</script>
+
+</body>
+</html>
